@@ -1,7 +1,9 @@
-.DS_Store
-
-__pycache__/
+# Images et vidéos générées
 outputs/*
 !outputs/.keep
+*.mp4
+*.ppm
 
-frozar_main.py
+# Python
+__pycache__/
+*.pyc
