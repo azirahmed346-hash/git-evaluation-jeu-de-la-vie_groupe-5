@@ -50,6 +50,20 @@ def count_neighbors(matrix, row, col, periodic=False):
                 total += matrix[neighbor_row][neighbor_col]
     return total
 
+def next_generation(matrix, periodic=False):
+    size = len(matrix)
+    new_matrix = []
+    for row in range(size):
+        new_row = []
+        for col in range(size):
+            neighbors = count_neighbors(matrix, row, col, periodic)
+            if matrix[row][col] == 1:
+                new_row.append(1 if neighbors in (2, 3) else 0)
+            else:
+                new_row.append(1 if neighbors == 3 else 0)
+        new_matrix.append(new_row)
+    return new_matrix
+
 def main():
     nb_cells = 50
 
