@@ -46,7 +46,10 @@ def count_neighbors(matrix, row, col, periodic=False):
                 continue
             neighbor_row = row + d_row
             neighbor_col = col + d_col
-            if 0 <= neighbor_row < size and 0 <= neighbor_col < size:
+            
+            if periodic:
+                total += matrix[neighbor_row % size][neighbor_col % size]
+            elif 0 <= neighbor_row < size and 0 <= neighbor_col < size:
                 total += matrix[neighbor_row][neighbor_col]
     return total
 
