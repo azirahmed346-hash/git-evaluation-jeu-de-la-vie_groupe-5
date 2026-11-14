@@ -37,6 +37,32 @@ def parse_args():
                         help="active les conditions aux limites périodiques")
     return parser.parse_args()
 
+def count_neighbors(matrix, row, col, periodic=False):
+    size = len(matrix)
+    total = 0
+    for d_row in (-1, 0, 1):
+        for d_col in (-1, 0, 1):
+            if d_row == 0 and d_col == 0:
+                continue
+            neighbor_row = row + d_row
+            neighbor_col = col + d_col
+            if 0 <= neighbor_row < size and 0 <= neighbor_col < size:
+                total += matrix[neighbor_row][neighbor_col]
+    return total
+
+def next_generation(matrix, periodic=False):
+    size = len(matrix)
+    new_matrix = []
+    for row in range(size):
+        new_row = []
+        for col in range(size):
+            neighbors = count_neighbors(matrix, row, col, periodic)
+            if matrix[row][col] == 1:
+                new_row.append(1 if neighbors in (2, 3) else 0)
+            else:
+                new_row.append(1 if neighbors == 3 else 0)
+        new_matrix.append(new_row)
+    return new_matrix
 
 def main():
     nb_cells = 50
