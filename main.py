@@ -1,5 +1,6 @@
 import argparse
 import random
+import sys
 
 from lib import write_grid
 from pathlib import Path
@@ -47,7 +48,7 @@ def count_neighbors(matrix, row, col, periodic=False):
                 continue
             neighbor_row = row + d_row
             neighbor_col = col + d_col
-            
+
             if periodic:
                 total += matrix[neighbor_row % size][neighbor_col % size]
             elif 0 <= neighbor_row < size and 0 <= neighbor_col < size:
@@ -68,12 +69,49 @@ def next_generation(matrix, periodic=False):
         new_matrix.append(new_row)
     return new_matrix
 
+
 def write_image(matrix, iteration, output_directory):
     directory = Path(output_directory)
     directory.mkdir(parents=True, exist_ok=True)
     size = max(540, 2 * len(matrix) + 1)
     filename = directory / f"grid_{iteration:04d}.png"
     write_grid(matrix=matrix, filename=filename, size=size)
+
+
+def fail(message):
+    print(f"Error: {message}", file=sys.stderr)
+    sys.exit(1)
+
+
+def parse_matrix(text):
+    lines = [line for line in text.splitlines() if line.strip()]
+    if not lines:
+        fail("la grille est vide")
+    try:
+        size = int(lines[0])
+    except ValueError:
+        fail("la première ligne doit contenir la taille de la grille")
+    if size <= 0:
+        fail("la taille de la grille doit être strictement positive")
+    rows = lines[1:]
+    if len(rows) != size:
+        fail(f"{size} lignes attendues, {len(rows)} reçues")
+    matrix = []
+    for number, row in enumerate(rows, start=1):
+        cells = row.split()
+        if len(cells) != size:
+            fail(f"ligne {number} : {size} cellules attendues, {len(cells)} reçues")
+        for cell in cells:
+            if cell not in ("0", "1"):
+                fail(f"ligne {number} : cellule invalide '{cell}' (0 ou 1 attendu)")
+        matrix.append([int(cell) for cell in cells])
+    return matrix
+
+
+def read_matrix_from_stdin():
+    return parse_matrix(sys.stdin.read())
+
+
 
 def main():
     nb_cells = 50
