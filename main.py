@@ -103,6 +103,14 @@ def read_matrix_from_stdin():
     return parse_matrix(sys.stdin.read())
 
 
+    
+def generate_random_matrix(nb_cells, seed):
+    rng = random.Random(seed)
+    return [
+        [rng.choice([0, 1]) for _ in range(nb_cells)]
+        for _ in range(nb_cells)
+    ]
+
 def main():
     nb_cells = 50
 
