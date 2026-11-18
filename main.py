@@ -2,6 +2,7 @@ import argparse
 import random
 
 from lib import write_grid
+from pathlib import Path
 
 def positive_int(value):
     number = int(value)
@@ -66,6 +67,13 @@ def next_generation(matrix, periodic=False):
                 new_row.append(1 if neighbors == 3 else 0)
         new_matrix.append(new_row)
     return new_matrix
+
+def write_image(matrix, iteration, output_directory):
+    directory = Path(output_directory)
+    directory.mkdir(parents=True, exist_ok=True)
+    size = max(540, 2 * len(matrix) + 1)
+    filename = directory / f"grid_{iteration:04d}.png"
+    write_grid(matrix=matrix, filename=filename, size=size)
 
 def main():
     nb_cells = 50
