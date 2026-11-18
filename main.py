@@ -123,6 +123,11 @@ def generate_random_matrix(nb_cells, seed):
     ]
 
 
+def format_text(matrix, iteration):
+    lines = [f"iteration: {iteration}"]
+    lines += [" ".join(str(cell) for cell in row) for row in matrix]
+    return "\n".join(lines)
+
 def main():
     nb_cells = 50
 
