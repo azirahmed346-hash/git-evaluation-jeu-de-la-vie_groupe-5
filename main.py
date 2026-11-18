@@ -102,7 +102,6 @@ def parse_matrix(text):
 def read_matrix_from_stdin():
     return parse_matrix(sys.stdin.read())
 
-
     
 def generate_random_matrix(nb_cells, seed):
     rng = random.Random(seed)
@@ -110,6 +109,12 @@ def generate_random_matrix(nb_cells, seed):
         [rng.choice([0, 1]) for _ in range(nb_cells)]
         for _ in range(nb_cells)
     ]
+
+
+def format_text(matrix, iteration):
+    lines = [f"iteration: {iteration}"]
+    lines += [" ".join(str(cell) for cell in row) for row in matrix]
+    return "\n".join(lines)
 
 def main():
     nb_cells = 50
