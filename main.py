@@ -128,19 +128,37 @@ def format_text(matrix, iteration):
     lines += [" ".join(str(cell) for cell in row) for row in matrix]
     return "\n".join(lines)
 
+
+def simulate(matrix, max_iterations, periodic):
+    yield 0, matrix
+    for iteration in range(1, max_iterations + 1):
+        matrix = next_generation(matrix, periodic)
+        yield iteration, matrix
+
+
+def write_images(generations, output_directory):
+    count = 0
+    for iteration, matrix in generations:
+        write_image(matrix, iteration, output_directory)
+        count += 1
+    return count
+
+
 def main():
-    nb_cells = 50
+    args = parse_args()
+    if sys.stdin.isatty():
+        matrix = generate_random_matrix(args.nb_cells, args.seed)
+    else:
+        matrix = read_matrix_from_stdin()
+    generations = simulate(matrix, args.max_iterations, args.periodic)
+    if args.output_type == "text":
+        for iteration, last_matrix in generations:
+            pass
+        print(format_text(last_matrix, iteration))
+    else:
+        count = write_images(generations, args.output_directory)
+        print(f"Generation of {count} images in directory {args.output_directory}")
 
-    rng = random.Random(4200)
-
-    matrix = [
-        [rng.choice([0, 1]) for _ in range(nb_cells)]
-        for _ in range(nb_cells)
-    ]
-
-    iter = 0
-    filename = f"outputs/grid_{iter:04d}.png"
-    write_grid(matrix=matrix, filename=filename)
 
 if __name__ == "__main__":
     main()
