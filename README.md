@@ -213,7 +213,7 @@ Le programme annonce `Generation of 2001 images in directory outputs/video-seed-
 
 ### Vidéo Gource de l'historique du dépôt
 
-Vidéo YouTube : [À COMPLÉTER : lien YouTube de Gource]
+Vidéo YouTube : https://youtu.be/rnAKmGbSG8A
 
 Commande utilisée, depuis la racine du dépôt :
 
