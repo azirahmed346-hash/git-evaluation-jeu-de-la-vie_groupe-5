@@ -156,7 +156,11 @@ def main():
             pass
         print(format_text(last_matrix, iteration))
     else:
-        count = write_images(generations, args.output_directory)
+        try:
+            count = write_images(generations, args.output_directory)
+        except OSError as error:
+            print(f"Erreur : impossible d'écrire dans '{args.output_directory}' ({error})", file=sys.stderr)
+            sys.exit(1)
         print(f"Generation of {count} images in directory {args.output_directory}")
 
 
